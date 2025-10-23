@@ -1,5 +1,6 @@
 // src/main.rs
 mod config; mod schema;
+mod consumer { pub mod reader; }
 mod source { pub mod firestore_listen; }
 mod pipeline { pub mod batcher; pub mod transform; }
 mod sink { pub mod parquet_writer; pub mod iceberg_commit; }
@@ -15,7 +16,7 @@ struct Cli {
   cmd: Cmd
 }
 #[derive(Subcommand)]
-enum Cmd { Run, Backfill }
+enum Cmd { Run, Backfill, Read }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -71,6 +72,10 @@ async fn main() -> anyhow::Result<()> {
       // Option A: read existing docs once and push them through the same path
       // (Or load from Firestore export in GCS)
       unimplemented!("Backfill command stub");
+    }
+    Cmd::Read => {
+      let reader = consumer::reader::Reader::new(&cfg.gcs_bucket, &cfg.gcs_prefix).await?;
+      reader.read(&cfg.table_ns, &cfg.table_orders).await?;
     }
   }
   Ok(())

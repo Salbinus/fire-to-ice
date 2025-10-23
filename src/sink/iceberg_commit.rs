@@ -8,14 +8,20 @@ pub struct IcebergCommit {
 }
 
 impl IcebergCommit {
-  pub async fn new(_uri: &str) -> anyhow::Result<Self> {
-    // For now, create a MemoryCatalog - in production you'd want to use a proper REST catalog
+  pub async fn new(catalog_uri: &str) -> anyhow::Result<Self> {
+    // For now, keep using memory catalog but log the intended GCS location
     let mut props = HashMap::new();
     props.insert("warehouse".to_string(), "memory://".to_string());
+    
+    if catalog_uri.starts_with("gs://") {
+      println!("Intended GCS warehouse: {} (currently using memory catalog)", catalog_uri);
+      println!("Note: To use GCS, you'll need to implement proper Iceberg table creation");
+    }
     
     let catalog = MemoryCatalogBuilder::default()
         .load("memory", props)
         .await?;
+    
     Ok(Self { catalog: Arc::new(catalog) })
   }
 

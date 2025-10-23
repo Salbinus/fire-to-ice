@@ -2,6 +2,7 @@ use tokio::time::{Instant, Duration};
 use futures::StreamExt;
 
 /// Collects elements from a stream into Vec batches
+#[allow(dead_code)]
 pub async fn run_batcher<S>(
     mut stream: S,
     max_rows: usize,

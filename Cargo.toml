@@ -32,3 +32,6 @@ clap = { version = "4", features=["derive"] }
 dotenvy = "0.15"
 chrono = "0.4.42"
 uuid = { version = "1", features=["v4"] }
+
+# Polars for data reading and analysis
+polars = { version = "0.51", features=["lazy", "parquet", "temporal", "strings", "cloud", "gcp"] }

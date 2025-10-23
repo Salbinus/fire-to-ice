@@ -2,6 +2,7 @@ use arrow_array::{Float64Array, StringArray, TimestampMillisecondArray, RecordBa
 use arrow::datatypes::{DataType, Field, Schema};
 use std::sync::Arc;
 
+#[allow(dead_code)]
 pub fn orders_schema() -> Arc<Schema> {
     Arc::new(Schema::new(vec![
         Field::new("id", DataType::Utf8, false),
@@ -13,6 +14,7 @@ pub fn orders_schema() -> Arc<Schema> {
     ]))
 }
 
+#[allow(dead_code)]
 pub fn to_orders_batch(rows: &[serde_json::Value]) -> anyhow::Result<RecordBatch> {
     let mut ids = Vec::new();
     let mut varieties = Vec::new();

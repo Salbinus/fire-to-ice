@@ -1,7 +1,6 @@
 // src/schema.rs
 use arrow_array::{Float64Array, StringArray, RecordBatch, TimestampMillisecondArray, ArrayRef};
 use arrow::datatypes::{DataType, Field, Schema};
-use chrono::{NaiveDate, NaiveDateTime};
 use std::sync::Arc;
 
 pub fn orders_schema() -> Arc<Schema> {
@@ -27,9 +26,14 @@ pub fn to_orders_batch(rows: &[serde_json::Value]) -> anyhow::Result<RecordBatch
     for r in rows {
         id.push(r["id"].as_str().unwrap_or_default().to_string());
         variety.push(r["variety"].as_str().unwrap_or_default().to_string());
-        qty.push(r["quantityInKg"].as_str().and_then(|s| s.parse::<f64>().ok()).or_else(|| r["quantity_in_kg"].as_f64()));
-        delivery.push(r["deliveryDate"].as_str().unwrap_or_default().to_string());
-        price.push(r["priceInEuro"].as_str().and_then(|s| s.parse::<f64>().ok()).or_else(|| r["price_in_euro"].as_f64()));
+        
+        // Get numeric values directly from JSON (should be f64 from Firestore)
+        let qty_val = r["quantity_in_kg"].as_f64().unwrap_or(0.0);
+        let price_val = r["price_in_euro"].as_f64().unwrap_or(0.0);
+        
+        qty.push(qty_val);
+        delivery.push(r["delivery_date"].as_str().unwrap_or_default().to_string());
+        price.push(price_val);
         ingest_ts.push(now_ms);
     }
 
