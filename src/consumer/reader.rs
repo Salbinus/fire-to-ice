@@ -80,7 +80,7 @@ impl Reader {
         println!("Loaded dataframe with {} rows and {} columns", df.height(), df.width());
         println!("Columns: {:?}", df.get_column_names());
         
-        println!("\n=== Sample Data ===");
+        println!("\n=== Dataframe ===");
         println!("{}", df);
         
         // Show data types

@@ -5,7 +5,6 @@ use parquet::arrow::ArrowWriter;
 use parquet::file::properties::WriterProperties;
 use arrow_array::RecordBatch;
 use uuid::Uuid;
-use std::io::Cursor;
 
 pub struct ParquetSink {
   store: Box<dyn ObjectStore>,

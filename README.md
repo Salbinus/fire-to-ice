@@ -4,32 +4,11 @@ A high-performance Rust pipeline for ingesting data from Google Firestore and wr
 
 ## Features
 
-- **Real-time ingestion**: Listen to Firestore changes in real-time
-- **Pub/Sub support**: Alternative ingestion via Google Cloud Pub/Sub
 - **Micro-batching**: Configurable batch sizes and timeouts
 - **Arrow/Parquet**: Efficient columnar data format
 - **Iceberg integration**: ACID transactions and schema evolution
-- **GCS storage**: Scalable cloud storage backend
+- **GCS storage**: Cloud storage backend
 - **CLI interface**: Easy-to-use command-line tool
-- **Backfill support**: Historical data migration
-- **Table compaction**: Optimize storage layout
-
-## Architecture
-
-```
-Firestore → Source → Pipeline → Sink → Iceberg Table
-    ↓         ↓         ↓        ↓         ↓
-  Changes   Batcher  Transform  Parquet   GCS
-```
-
-### Components
-
-- **Source**: Firestore listener or Pub/Sub subscriber
-- **Pipeline**: Batcher + Transformer
-- **Sink**: Parquet writer + Iceberg committer
-- **Storage**: Google Cloud Storage with Iceberg metadata
-
-## Installation
 
 ### Prerequisites
 
@@ -53,22 +32,13 @@ cargo build --release
 ### Environment Variables
 
 ```bash
-# Required
-export GCP_PROJECT_ID="your-project-id"
-export FIRESTORE_COLLECTION_PATH="your-collection"
+# For Example
+export GCP_PROJECT="your-project-id"
 export GCS_BUCKET="your-bucket"
-export ICEBERG_TABLE_NAME="your-table"
-
-# Optional
-export FIRESTORE_DATABASE_ID="(default)"
-export GCS_PREFIX="firestore-data"
-export ICEBERG_CATALOG_NAME="gcs"
-export ICEBERG_NAMESPACE="default"
-export BATCH_SIZE="1000"
-export BATCH_TIMEOUT_MS="5000"
-export MAX_RETRIES="3"
-export USE_PUBSUB="false"
-export PUBSUB_SUBSCRIPTION="your-subscription"
+export GCS_PREFIX="your-prefix"
+export BATCH_MAX_ROWS=50
+export BATCH_MAX_SECONDS=5
+export ICEBERG_CATALOG_URI="gs://path-to-iceberg-catalog"
 ```
 
 ### Configuration File

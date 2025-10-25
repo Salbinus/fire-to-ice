@@ -24,9 +24,6 @@ parquet = { version = "53", features=["arrow"] }
 # GCS object store
 object_store = { version = "0.11", features=["gcp"] }
 
-# Iceberg (official Rust)
-iceberg = "0.7.0"
-
 # CLI + config
 clap = { version = "4", features=["derive"] }
 dotenvy = "0.15"
